@@ -11,11 +11,18 @@ const spotifyApi = new SpotifyWebApi({
 	clientSecret: clientSecret
 });
 
+app.use(express.static('public'));
+
 app.get('/', (req, res) => {
-	console.log('yoyo');
 });
 
-app.use(express.static('public'));
+app.get('/process_get', (req, res) => {
+	response = {
+		search: req.query.search
+	}
+	
+	responseValue = response.search;
+});
 
 // Retrieve an access token
 spotifyApi.clientCredentialsGrant()
@@ -24,14 +31,9 @@ spotifyApi.clientCredentialsGrant()
     // Set the access token on the API object so that it's used in all future requests
     spotifyApi.setAccessToken(data.body['access_token']);
 
-    // return spotifyApi.getAudioAnalysisForTrack('3Qm86XLflmIXVm1wcwkgDK');
 		return spotifyApi.searchTracks('Love');
   }).then(function(data) {
-		console.log(data.body.tracks.items);
-//		data.body.tracks.items.forEach((x) => {
-//			console.log(x.album.name);
-//		});
-		//console.log(data.body.track.tempo);
+//		console.log(data.body.tracks.items);
 
   }).catch(function(err) {
     console.log('Unfortunately, something has gone wrong.', err.message);
@@ -40,4 +42,7 @@ spotifyApi.clientCredentialsGrant()
 const server = app.listen(8081, () => {
 	const host = server.address().address;
 	const port = server.address().port;
+
+	console.log(port);
 });
+
