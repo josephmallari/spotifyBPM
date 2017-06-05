@@ -22,22 +22,32 @@ app.get('/process_get', (req, res) => {
 	}
 	
 	responseValue = response.search;
-});
+	array = [];
 
-// Retrieve an access token
-spotifyApi.clientCredentialsGrant()
-  .then(function(data) {
+	// Retrieve an access token
+	spotifyApi.clientCredentialsGrant()
+ 	 .then(function(data) {
 
     // Set the access token on the API object so that it's used in all future requests
     spotifyApi.setAccessToken(data.body['access_token']);
 
-		return spotifyApi.searchTracks('Love');
-  }).then(function(data) {
-//		console.log(data.body.tracks.items);
+		return spotifyApi.searchTracks(responseValue);
+ 	 }).then(function(data) {
 
-  }).catch(function(err) {
+	// console.log(data.body.tracks.items);
+			data.body.tracks.items.forEach((track) => {
+			const trackUri = track.uri.slice(14);
+			array.push(trackUri);		
+		});
+
+		spotifyApi.getAudioFeaturesForTracks(array)
+ 			 .then(function(data) {
+				console.log(data.body.audio_features);
+		  });
+ 	 }).catch(function(err) {
     console.log('Unfortunately, something has gone wrong.', err.message);
   });
+});
 
 const server = app.listen(8081, () => {
 	const host = server.address().address;
