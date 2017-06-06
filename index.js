@@ -20,7 +20,7 @@ app.get('/process_get', (req, res) => {
 	response = {
 		search: req.query.search
 	}
-	
+
 	responseValue = response.search;
 	array = [];
 
@@ -33,14 +33,19 @@ app.get('/process_get', (req, res) => {
 
 		return spotifyApi.searchTracks(responseValue);
  	 }).then(function(data) {
-
-	// console.log(data.body.tracks.items);
+			trackArray = [];
 			data.body.tracks.items.forEach((track) => {
-			const trackUri = track.uri.slice(14);
-			array.push(trackUri);		
-		});
+				trackArray.push(track.name);
+			});
 
-		spotifyApi.getAudioFeaturesForTracks(array)
+			res.send(JSON.stringify(trackArray));
+
+			data.body.tracks.items.forEach((track) => {
+				const trackUri = track.uri.slice(14);
+				array.push(trackUri);
+			});
+
+		  spotifyApi.getAudioFeaturesForTracks(array)
  			 .then(function(data) {
 				console.log(data.body.audio_features);
 		  });
@@ -55,4 +60,3 @@ const server = app.listen(8081, () => {
 
 	console.log(port);
 });
-
