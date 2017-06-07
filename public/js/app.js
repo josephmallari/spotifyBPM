@@ -1,11 +1,11 @@
-console.log('logging from client side');
+$('input').click((e) => {
+ e.preventDefault();
 
-setTimeout(() => {
-	fetch('127.0.0.1:8081/process_get')
-		.then((data) => {
+ const searchString = $('input').val();
+ const originalHref = $('form').attr('action');
+ $('form').submit(
+	$.get(`${originalHref}?search=${searchString}`, {}).done((data) => {
 		console.log(data);
-	}).catch((error) => {
-		console.log(error);
-	});
-}, 5000);
-
+	 })
+  );
+});

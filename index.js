@@ -38,7 +38,7 @@ app.get('/process_get', (req, res) => {
 				trackArray.push(track.name);
 			});
 
-			res.send(JSON.stringify(trackArray));
+			res.send(trackArray);
 
 			data.body.tracks.items.forEach((track) => {
 				const trackUri = track.uri.slice(14);
@@ -47,8 +47,10 @@ app.get('/process_get', (req, res) => {
 
 		  spotifyApi.getAudioFeaturesForTracks(array)
  			 .then(function(data) {
-				console.log(data.body.audio_features);
+			  	console.log(data.body.audio_features);
+//				res.obj(jsonObj);
 		  });
+
  	 }).catch(function(err) {
     console.log('Unfortunately, something has gone wrong.', err.message);
   });
