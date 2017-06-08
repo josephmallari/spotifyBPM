@@ -34,11 +34,9 @@ app.get('/process_get', (req, res) => {
 		return spotifyApi.searchTracks(responseValue);
  	 }).then(function(data) {
 			trackArray = [];
-			data.body.tracks.items.forEach((track) => {
-				trackArray.push(track.name);
-			});
+			featuresArray = [];
 
-			res.send(trackArray);
+			trackArray.push(data.body.tracks);
 
 			data.body.tracks.items.forEach((track) => {
 				const trackUri = track.uri.slice(14);
@@ -47,10 +45,11 @@ app.get('/process_get', (req, res) => {
 
 		  spotifyApi.getAudioFeaturesForTracks(array)
  			 .then(function(data) {
-			  	console.log(data.body.audio_features);
-//				res.obj(jsonObj);
+					featuresArray.push(data.body.audio_features);
+					newArray = trackArray.concat(featuresArray);
+					res.json(newArray);
 		  });
-
+		
  	 }).catch(function(err) {
     console.log('Unfortunately, something has gone wrong.', err.message);
   });
