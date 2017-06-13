@@ -5,7 +5,7 @@ $('input').click((e) => {
  const originalHref = $('form').attr('action');
 
  $('form').submit(
-	$.get(`${originalHref}?search=${searchString}`, {}).done((data) => {
+	$.getJSON(`${originalHref}?search=${searchString}`, {}).done((data) => {
 		console.log(data);
 		data[0].items.forEach((track) => {
 			document.querySelector('.track__title').innerHTML += `<div>${track.name}</div>`;
