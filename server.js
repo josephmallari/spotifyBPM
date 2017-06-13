@@ -13,6 +13,12 @@ const spotifyApi = new SpotifyWebApi({
 
 app.use(express.static('public'));
 
+app.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });
+
 app.get('/', (req, res) => {} );
 
 app.get('/process_get', (req, res) => {
@@ -52,19 +58,6 @@ app.get('/process_get', (req, res) => {
  	 }).catch(function(err) {
     console.log('Unfortunately, something has gone wrong.', err.message);
   });
-});
-
-app.all('*', function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'accept, content-type, x-parse-application-id, x-parse-rest-api-key, x-parse-session-token');
-     // intercept OPTIONS method
-    if ('OPTIONS' == req.method) {
-      res.send(200);
-    }
-    else {
-      next();
-    }
 });
 
 app.listen(process.env.PORT || 8081, () => {
