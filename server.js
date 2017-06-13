@@ -54,9 +54,6 @@ app.get('/process_get', (req, res) => {
   });
 });
 
-const server = app.listen(8081, () => {
-	const host = server.address().address;
-	const port = server.address().port;
-
-	console.log(port);
+app.listen(process.env.PORT || 3000, () => {
+	console.log('listening on 3000');
 });
