@@ -13,8 +13,7 @@ const spotifyApi = new SpotifyWebApi({
 
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-});
+app.get('/', (req, res) => {} );
 
 app.get('/process_get', (req, res) => {
 	response = {
